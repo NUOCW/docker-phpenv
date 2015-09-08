@@ -10,7 +10,6 @@ services:
 
 before_script:
   - env | sort
-  - cd "$VERSION"
   - export image="nuocw/testing-environment:$VERSION"
 
 script:
