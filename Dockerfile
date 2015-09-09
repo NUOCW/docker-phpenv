@@ -43,7 +43,7 @@ RUN phpenv install $PHP_54_LATEST
 RUN phpenv install $PHP_55_LATEST
 RUN phpenv install $PHP_56_LATEST
 RUN phpenv install $PHP_70_LATEST
-RUN phpenv rehash && phpenv global $PHP_54_LATEST
+RUN phpenv rehash && phpenv global $PHP_56_LATEST
 RUN rm -rf /tmp/php-build
 
 CMD ["/bin/bash", "-c"]
