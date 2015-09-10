@@ -31,7 +31,7 @@ RUN echo 'eval "$(anyenv init -)"' >> .bash_profile
 # update anyenv
 RUN mkdir -p .anyenv/plugins
 RUN git clone https://github.com/znz/anyenv-update.git ${ANYENV_ROOT}/plugins/anyenv-update
-RUN git clone https://github.com/ngyuki/phpenv-composer.git ${ANYENV_ROOT}/plugins/anyenv-composer
+# RUN git clone https://github.com/ngyuki/phpenv-composer.git ${ANYENV_ROOT}/plugins/anyenv-composer
 
 ENV PATH="${HOME}/.anyenv/bin:${PATH}"
 RUN eval "$(anyenv init -)"
@@ -40,17 +40,17 @@ RUN eval "$(anyenv init -)"
 RUN anyenv install phpenv
 ENV PHPENV_ROOT=${ANYENV_ENV}/phpenv
 ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
-RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
+# RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
 RUN eval "$(anyenv init -)"
-RUN phpenv install $PHP_54_LATEST && phpenv rehash
-RUN phpenv install $PHP_55_LATEST && phpenv rehash
+# RUN phpenv install $PHP_54_LATEST && phpenv rehash
+# RUN phpenv install $PHP_55_LATEST && phpenv rehash
 RUN phpenv install $PHP_56_LATEST && phpenv rehash
-RUN phpenv install $PHP_70_LATEST && phpenv rehash
+# RUN phpenv install $PHP_70_LATEST && phpenv rehash
 RUN phpenv global $PHP_56_LATEST
-USER root
-RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
+RUN mkdir ${HOME}/bin && curl -sS https://getcomposer.org/installer | php -- --install-dir=${HOME}/bin --filename=composer
+RUN echo 'export PATH=${HOME}/bin:${PATH}' >> .bash_profile
+ENV PATH=${HOME}/bin:${PATH}
 RUN rm -rf /tmp/php-build
 
-USER nuocw
 
 CMD ["/bin/bash", "-c"]
