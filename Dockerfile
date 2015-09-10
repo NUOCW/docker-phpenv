@@ -12,6 +12,7 @@ RUN yum update -y && yum install -y \
     bison \
 	libmcrypt-devel \
 	libtidy-devel \
+	re2-devel \
 	&& yum clean all
 
 # add user "nuocw"
@@ -29,7 +30,8 @@ RUN echo 'eval "$(anyenv init -)"' >> .bash_profile
 
 # update anyenv
 RUN mkdir -p .anyenv/plugins
-RUN git clone https://github.com/znz/anyenv-update.git .anyenv/plugins/anyenv-update
+RUN git clone https://github.com/znz/anyenv-update.git ${ANYENV_ROOT}/plugins/anyenv-update
+RUN git clone https://github.com/ngyuki/phpenv-composer.git ${ANYENV_ROOT}/plugins/anyenv-composer
 
 ENV PATH="${HOME}/.anyenv/bin:${PATH}"
 RUN eval "$(anyenv init -)"
@@ -38,12 +40,17 @@ RUN eval "$(anyenv init -)"
 RUN anyenv install phpenv
 ENV PHPENV_ROOT=${ANYENV_ENV}/phpenv
 ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
+RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
 RUN eval "$(anyenv init -)"
-RUN phpenv install $PHP_54_LATEST
-RUN phpenv install $PHP_55_LATEST
-RUN phpenv install $PHP_56_LATEST
-RUN phpenv install $PHP_70_LATEST
-RUN phpenv rehash && phpenv global $PHP_56_LATEST
+RUN phpenv install $PHP_54_LATEST && phpenv rehash
+RUN phpenv install $PHP_55_LATEST && phpenv rehash
+RUN phpenv install $PHP_56_LATEST && phpenv rehash
+RUN phpenv install $PHP_70_LATEST && phpenv rehash
+RUN phpenv global $PHP_56_LATEST
+USER root
+RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/local/bin/composer
 RUN rm -rf /tmp/php-build
+
+USER nuocw
 
 CMD ["/bin/bash", "-c"]
