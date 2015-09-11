@@ -42,10 +42,10 @@ ENV PHPENV_ROOT=${ANYENV_ENV}/phpenv
 ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
 # RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
 RUN eval "$(anyenv init -)"
-# RUN phpenv install $PHP_54_LATEST && phpenv rehash
-# RUN phpenv install $PHP_55_LATEST && phpenv rehash
+RUN phpenv install $PHP_54_LATEST && phpenv rehash
+RUN phpenv install $PHP_55_LATEST && phpenv rehash
 RUN phpenv install $PHP_56_LATEST && phpenv rehash
-# RUN phpenv install $PHP_70_LATEST && phpenv rehash
+RUN phpenv install $PHP_70_LATEST && phpenv rehash
 RUN phpenv global $PHP_56_LATEST
 RUN mkdir ${HOME}/bin && curl -sS https://getcomposer.org/installer | php -- --install-dir=${HOME}/bin --filename=composer
 RUN echo 'export PATH=${HOME}/bin:${PATH}' >> .bash_profile
