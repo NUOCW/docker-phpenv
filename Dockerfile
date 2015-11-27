@@ -2,9 +2,9 @@ FROM nuocw/buildpack-deps:centos7
 MAINTAINER "TOIDA Yuto" <toida.yuto@b.mbox.nagoya-u.ac.jp>
 
 ENV PHP_54_LATEST=5.4.45
-ENV PHP_55_LATEST=5.5.29
-ENV PHP_56_LATEST=5.6.13
-ENV PHP_70_LATEST=7.0.0RC2
+ENV PHP_55_LATEST=5.5.30
+ENV PHP_56_LATEST=5.6.16
+ENV PHP_70_LATEST=7.0.0RC8
 
 # dependencies for building php
 RUN yum update -y && yum install -y epel-release && yum clean all
@@ -15,10 +15,11 @@ RUN yum update -y && yum install -y \
 	re2-devel \
 	&& yum clean all
 
-# add user "nuocw"
-RUN useradd nuocw
-USER nuocw
-ENV HOME="/home/nuocw"
+## add user "nuocw"
+#RUN useradd nuocw
+#USER nuocw
+#ENV HOME="/home/nuocw"
+ENV HOME="/root"
 WORKDIR ${HOME}
 
 # install anyenv
