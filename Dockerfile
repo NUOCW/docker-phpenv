@@ -1,10 +1,9 @@
 FROM nuocw/buildpack-deps:centos7
 MAINTAINER "TOIDA Yuto" <toida.yuto@b.mbox.nagoya-u.ac.jp>
 
-ENV PHP_54_LATEST=5.4.45
-ENV PHP_55_LATEST=5.5.30
-ENV PHP_56_LATEST=5.6.16
-ENV PHP_70_LATEST=7.0.0RC8
+ENV PHP_55_LATEST=5.5.34
+ENV PHP_56_LATEST=5.6.20
+ENV PHP_70_LATEST=7.0.5
 
 # dependencies for building php
 RUN yum update -y && yum install -y epel-release && yum clean all
@@ -43,7 +42,7 @@ ENV PHPENV_ROOT=${ANYENV_ENV}/phpenv
 ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
 # RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
 RUN eval "$(anyenv init -)"
-RUN phpenv install $PHP_54_LATEST && phpenv rehash
+#RUN phpenv install $PHP_54_LATEST && phpenv rehash
 RUN phpenv install $PHP_55_LATEST && phpenv rehash
 RUN phpenv install $PHP_56_LATEST && phpenv rehash
 RUN phpenv install $PHP_70_LATEST && phpenv rehash
@@ -53,5 +52,6 @@ RUN echo 'export PATH=${HOME}/bin:${PATH}' >> .bash_profile
 ENV PATH=${HOME}/bin:${PATH}
 RUN rm -rf /tmp/php-build
 
+RUN find ~/ -type f -name "php.ini" -exec sed -i '/;date.timezone/c\date.timezone = "Asia/Tokyo"' {} \;
 
 CMD ["/bin/bash", "-c"]
