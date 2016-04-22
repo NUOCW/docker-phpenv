@@ -53,5 +53,6 @@ ENV PATH=${HOME}/bin:${PATH}
 RUN rm -rf /tmp/php-build
 
 RUN find ~/ -type f -name "php.ini" -exec sed -i '/;date.timezone/c\date.timezone = "Asia/Tokyo"' {} \;
+RUN composer global require hirak/prestissimo
 
 CMD ["/bin/bash", "-c"]
