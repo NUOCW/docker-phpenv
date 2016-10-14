@@ -1,9 +1,11 @@
 FROM nuocw/buildpack-deps:centos7
 MAINTAINER "TOIDA Yuto" <toida.yuto@b.mbox.nagoya-u.ac.jp>
 
-ENV PHP_55_LATEST=5.5.34
-ENV PHP_56_LATEST=5.6.20
-ENV PHP_70_LATEST=7.0.5
+ENV PHP_54_LATEST=5.4.45
+ENV PHP_55_LATEST=5.5.38
+ENV PHP_56_LATEST=5.6.26
+ENV PHP_70_LATEST=7.0.11
+ENV PHP_71_LATEST=7.1.0RC3
 
 # dependencies for building php
 RUN yum update -y && yum install -y epel-release && yum clean all
@@ -46,7 +48,8 @@ RUN eval "$(anyenv init -)"
 RUN phpenv install $PHP_55_LATEST && phpenv rehash
 RUN phpenv install $PHP_56_LATEST && phpenv rehash
 RUN phpenv install $PHP_70_LATEST && phpenv rehash
-RUN phpenv global $PHP_56_LATEST
+RUN phpenv install $PHP_71_LATEST && phpenv rehash
+RUN phpenv global $PHP_70_LATEST
 RUN mkdir ${HOME}/bin && curl -sS https://getcomposer.org/installer | php -- --install-dir=${HOME}/bin --filename=composer
 RUN echo 'export PATH=${HOME}/bin:${PATH}' >> .bash_profile
 ENV PATH=${HOME}/bin:${PATH}
