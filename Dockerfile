@@ -1,12 +1,6 @@
 FROM nuocw/buildpack-deps:centos7
 MAINTAINER "TOIDA Yuto" <toida.yuto@b.mbox.nagoya-u.ac.jp>
 
-ENV PHP_54_LATEST=5.4.45
-ENV PHP_55_LATEST=5.5.38
-ENV PHP_56_LATEST=5.6.26
-ENV PHP_70_LATEST=7.0.11
-ENV PHP_71_LATEST=7.1.0RC3
-
 # dependencies for building php
 RUN yum update -y && yum install -y epel-release && yum clean all
 RUN yum update -y && yum install -y \
@@ -44,12 +38,15 @@ ENV PHPENV_ROOT=${ANYENV_ENV}/phpenv
 ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
 # RUN git clone https://github.com/ngyuki/phpenv-composer.git ${PHPENV_ROOT}/plugins/phpenv-composer
 RUN eval "$(anyenv init -)"
-#RUN phpenv install $PHP_54_LATEST && phpenv rehash
-RUN phpenv install $PHP_55_LATEST && phpenv rehash
-RUN phpenv install $PHP_56_LATEST && phpenv rehash
-RUN phpenv install $PHP_70_LATEST && phpenv rehash
-RUN phpenv install $PHP_71_LATEST && phpenv rehash
-RUN phpenv global $PHP_70_LATEST
+
+# PHP5.4 is End of Life
+RUN PHP_54_LATEST=$(phpenv install -l | grep -P "5\.4\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_54_LATEST && phpenv rehash
+# PHP5.5 is End of Life
+RUN PHP_55_LATEST=$(phpenv install -l | grep -P "5\.5\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_55_LATEST && phpenv rehash
+RUN PHP_56_LATEST=$(phpenv install -l | grep -P "5\.6\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_56_LATEST && phpenv rehash
+RUN PHP_70_LATEST=$(phpenv install -l | grep -P "7\.0\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_70_LATEST && phpenv rehash
+RUN PHP_71_LATEST=$(phpenv install -l | grep -P "7\.1\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_71_LATEST && phpenv rehash && phpenv global $PHP_71_LATEST
+
 RUN mkdir ${HOME}/bin && curl -sS https://getcomposer.org/installer | php -- --install-dir=${HOME}/bin --filename=composer
 RUN echo 'export PATH=${HOME}/bin:${PATH}' >> .bash_profile
 ENV PATH=${HOME}/bin:${PATH}
