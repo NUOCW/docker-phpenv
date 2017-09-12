@@ -5,10 +5,11 @@ MAINTAINER "TOIDA Yuto" <toida.yuto@b.mbox.nagoya-u.ac.jp>
 RUN yum update -y && yum install -y epel-release && yum clean all
 RUN yum update -y && yum install -y \
     bison \
-	libmcrypt-devel \
-	libtidy-devel \
-	re2-devel \
-	&& yum clean all
+    libmcrypt-devel \
+    libtidy-devel \
+    re2-devel \
+    libicu-devel \
+    && yum clean all
 
 ## add user "nuocw"
 #RUN useradd nuocw
