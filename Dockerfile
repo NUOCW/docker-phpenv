@@ -41,9 +41,9 @@ ENV PATH="${PHPENV_ROOT}/bin:${PHPENV_ROOT}/shims:${PATH}"
 RUN eval "$(anyenv init -)"
 
 # PHP5.4 is End of Life
-RUN PHP_54_LATEST=$(phpenv install -l | grep -P "5\.4\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_54_LATEST && phpenv rehash
+#RUN PHP_54_LATEST=$(phpenv install -l | grep -P "5\.4\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_54_LATEST && phpenv rehash
 # PHP5.5 is End of Life
-RUN PHP_55_LATEST=$(phpenv install -l | grep -P "5\.5\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_55_LATEST && phpenv rehash
+#RUN PHP_55_LATEST=$(phpenv install -l | grep -P "5\.5\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_55_LATEST && phpenv rehash
 RUN PHP_56_LATEST=$(phpenv install -l | grep -P "5\.6\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_56_LATEST && phpenv rehash
 RUN PHP_70_LATEST=$(phpenv install -l | grep -P "7\.0\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_70_LATEST && phpenv rehash
 RUN PHP_71_LATEST=$(phpenv install -l | grep -P "7\.1\.[0-9]+" | sed -e s/^\\s*// | tail -n1) && phpenv install $PHP_71_LATEST && phpenv rehash
